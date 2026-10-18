@@ -1,0 +1,2037 @@
+{
+  "schemaVersion": 2,
+  "course": {
+    "id": "chislehurst-golf-club",
+    "name": "Chislehurst Golf Club",
+    "latitude": 51.4111,
+    "longitude": 0.0655,
+    "coordinateReference": "approximate_clubhouse",
+    "holeCount": 18,
+    "coordinateSystem": "WGS84",
+    "retrievedDate": "2026-10-18"
+  },
+  "dataQuality": {
+    "status": "prototype_with_estimated_tee_colours",
+    "greenCentres": "18 polygon centroids from OpenStreetMap, matched to numbered hole-line endpoints; not surveyed or independently measured",
+    "referenceTees": "18 mapped hole-line start points inside mapped tee areas; colours unlabelled",
+    "colourSpecificTees": "PROVISIONAL. Assume each mapped start is a white reference, advance by published white-minus-colour yardage along the hole line, then snap to a nearby mapped tee area. This assumption is not verified; colours may share a point. No official tee-marker accuracy is claimed.",
+    "gpsPrototypeUsable": true,
+    "teeColoursVerified": false,
+    "independentCoordinateAccuracyMetres": null
+  },
+  "attribution": {
+    "text": "Map data \u00a9 OpenStreetMap contributors",
+    "url": "https://www.openstreetmap.org/copyright",
+    "licence": "ODbL 1.0",
+    "licenceUrl": "https://opendatacommons.org/licenses/odbl/1-0/"
+  },
+  "sources": [
+    {
+      "id": "osm",
+      "url": "https://www.openstreetmap.org/api/0.6/map?bbox=0.055,51.407,0.070,51.418",
+      "provides": "Raw mapped hole lines, tee polygons and green polygons; source object versions retained in GeoJSON"
+    },
+    {
+      "id": "scorecard",
+      "url": "https://www.chislehurstgolfclub.co.uk/the_course",
+      "provides": "Official website overview scorecard lengths, pars and stroke indexes. Hole-tour page has inconsistent hole-1 lengths; overview used consistently."
+    },
+    {
+      "id": "ratings",
+      "url": "https://stymie.golf/golf-courses/united-kingdom/england/chislehurst/chislehurst-golf-course",
+      "provides": "Secondary-source ratings; not independently confirmed"
+    },
+    {
+      "id": "club_ratings_men",
+      "url": "https://eagleplus.uk.com/c/chislehurst/course-ratings-men/",
+      "provides": "Club-linked male white/yellow ratings and total par"
+    },
+    {
+      "id": "club_ratings_women",
+      "url": "https://eagleplus.uk.com/c/chislehurst/course-ratings-women/",
+      "provides": "Club-linked female yellow/red ratings and total par"
+    }
+  ],
+  "holes": [
+    {
+      "number": 1,
+      "greenCentre": {
+        "latitude": 51.4147622,
+        "longitude": 0.0610465
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840055,
+      "holeOsmWayId": 849876688,
+      "mappedReferenceTee": {
+        "latitude": 51.4115462,
+        "longitude": 0.064677
+      },
+      "mappedReferenceTeeOsmWayId": 849810785,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4115462,
+          "longitude": 0.064677
+        },
+        {
+          "latitude": 51.4135189,
+          "longitude": 0.0629856
+        },
+        {
+          "latitude": 51.4143747,
+          "longitude": 0.0618673
+        },
+        {
+          "latitude": 51.4147642,
+          "longitude": 0.0610434
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4115462,
+            "longitude": 0.064677
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810785,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4116622,
+            "longitude": 0.0645775
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810786,
+          "scorecardOffsetFromReferenceYards": 16,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4117275,
+            "longitude": 0.0645216
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810786,
+          "scorecardOffsetFromReferenceYards": 25,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 2,
+      "greenCentre": {
+        "latitude": 51.4159625,
+        "longitude": 0.0661283
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840057,
+      "holeOsmWayId": 849876691,
+      "mappedReferenceTee": {
+        "latitude": 51.4152144,
+        "longitude": 0.061554
+      },
+      "mappedReferenceTeeOsmWayId": 849810844,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4152144,
+          "longitude": 0.061554
+        },
+        {
+          "latitude": 51.4159206,
+          "longitude": 0.0645888
+        },
+        {
+          "latitude": 51.4159631,
+          "longitude": 0.0661347
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4152144,
+            "longitude": 0.061554
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810844,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4152834,
+            "longitude": 0.0618505
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810845,
+          "scorecardOffsetFromReferenceYards": 24,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4152288,
+            "longitude": 0.0616158
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810844,
+          "scorecardOffsetFromReferenceYards": 5,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 3,
+      "greenCentre": {
+        "latitude": 51.4171987,
+        "longitude": 0.0644704
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840058,
+      "holeOsmWayId": 849876692,
+      "mappedReferenceTee": {
+        "latitude": 51.4158635,
+        "longitude": 0.0666593
+      },
+      "mappedReferenceTeeOsmWayId": 849810846,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4158635,
+          "longitude": 0.0666593
+        },
+        {
+          "latitude": 51.4172183,
+          "longitude": 0.0644456
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4158635,
+            "longitude": 0.0666593
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810846,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4159499,
+            "longitude": 0.0665181
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810847,
+          "scorecardOffsetFromReferenceYards": 15,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4158808,
+            "longitude": 0.0666311
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810846,
+          "scorecardOffsetFromReferenceYards": 3,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 4,
+      "greenCentre": {
+        "latitude": 51.4155943,
+        "longitude": 0.0676713
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840059,
+      "holeOsmWayId": 849876693,
+      "mappedReferenceTee": {
+        "latitude": 51.4174782,
+        "longitude": 0.0649035
+      },
+      "mappedReferenceTeeOsmWayId": 849810849,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4174782,
+          "longitude": 0.0649035
+        },
+        {
+          "latitude": 51.4161046,
+          "longitude": 0.0669996
+        },
+        {
+          "latitude": 51.4155888,
+          "longitude": 0.0676831
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4174782,
+            "longitude": 0.0649035
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810849,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4174544,
+            "longitude": 0.0649399
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810849,
+          "scorecardOffsetFromReferenceYards": 4,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4174365,
+            "longitude": 0.0649671
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810849,
+          "scorecardOffsetFromReferenceYards": 7,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 5,
+      "greenCentre": {
+        "latitude": 51.4156314,
+        "longitude": 0.0663559
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840060,
+      "holeOsmWayId": 849876694,
+      "mappedReferenceTee": {
+        "latitude": 51.4150941,
+        "longitude": 0.0674124
+      },
+      "mappedReferenceTeeOsmWayId": 849810850,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4150941,
+          "longitude": 0.0674124
+        },
+        {
+          "latitude": 51.4156478,
+          "longitude": 0.0663486
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4150941,
+            "longitude": 0.0674124
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810850,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4151204,
+            "longitude": 0.0673618
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810850,
+          "scorecardOffsetFromReferenceYards": 5,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4151521,
+            "longitude": 0.067301
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810850,
+          "scorecardOffsetFromReferenceYards": 11,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 6,
+      "greenCentre": {
+        "latitude": 51.4149063,
+        "longitude": 0.0613593
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840056,
+      "holeOsmWayId": 849876695,
+      "mappedReferenceTee": {
+        "latitude": 51.4158691,
+        "longitude": 0.0664661
+      },
+      "mappedReferenceTeeOsmWayId": 849810854,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4158691,
+          "longitude": 0.0664661
+        },
+        {
+          "latitude": 51.4150236,
+          "longitude": 0.0629751
+        },
+        {
+          "latitude": 51.4149074,
+          "longitude": 0.0613431
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4158691,
+            "longitude": 0.0664661
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810854,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4158334,
+            "longitude": 0.0663186
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810853,
+          "scorecardOffsetFromReferenceYards": 12,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4157619,
+            "longitude": 0.0660236
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810851,
+          "scorecardOffsetFromReferenceYards": 36,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 7,
+      "greenCentre": {
+        "latitude": 51.4137091,
+        "longitude": 0.0609901
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840061,
+      "holeOsmWayId": 849876696,
+      "mappedReferenceTee": {
+        "latitude": 51.4148288,
+        "longitude": 0.0607883
+      },
+      "mappedReferenceTeeOsmWayId": 849810858,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4148288,
+          "longitude": 0.0607883
+        },
+        {
+          "latitude": 51.4136942,
+          "longitude": 0.060994
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4148288,
+            "longitude": 0.0607883
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810858,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4147226,
+            "longitude": 0.0608076
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810857,
+          "scorecardOffsetFromReferenceYards": 13,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4145183,
+            "longitude": 0.0608446
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810856,
+          "scorecardOffsetFromReferenceYards": 38,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 8,
+      "greenCentre": {
+        "latitude": 51.4124406,
+        "longitude": 0.0593035
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840062,
+      "holeOsmWayId": 849876697,
+      "mappedReferenceTee": {
+        "latitude": 51.4134617,
+        "longitude": 0.06145
+      },
+      "mappedReferenceTeeOsmWayId": 849810861,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4134617,
+          "longitude": 0.06145
+        },
+        {
+          "latitude": 51.4124377,
+          "longitude": 0.0592926
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4134617,
+            "longitude": 0.06145
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810861,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4134119,
+            "longitude": 0.0613451
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810861,
+          "scorecardOffsetFromReferenceYards": 10,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4133322,
+            "longitude": 0.0611772
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810861,
+          "scorecardOffsetFromReferenceYards": 26,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 9,
+      "greenCentre": {
+        "latitude": 51.4106327,
+        "longitude": 0.0632065
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840063,
+      "holeOsmWayId": 849876698,
+      "mappedReferenceTee": {
+        "latitude": 51.4121381,
+        "longitude": 0.0592865
+      },
+      "mappedReferenceTeeOsmWayId": 849810868,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4121381,
+          "longitude": 0.0592865
+        },
+        {
+          "latitude": 51.4110802,
+          "longitude": 0.0621435
+        },
+        {
+          "latitude": 51.4106303,
+          "longitude": 0.063215
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4121381,
+            "longitude": 0.0592865
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810868,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4120877,
+            "longitude": 0.0594225
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810868,
+          "scorecardOffsetFromReferenceYards": 12,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4120457,
+            "longitude": 0.0595359
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810868,
+          "scorecardOffsetFromReferenceYards": 22,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 10,
+      "greenCentre": {
+        "latitude": 51.4111655,
+        "longitude": 0.0629332
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840065,
+      "holeOsmWayId": 849876699,
+      "mappedReferenceTee": {
+        "latitude": 51.4105792,
+        "longitude": 0.0650471
+      },
+      "mappedReferenceTeeOsmWayId": 849810873,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4105792,
+          "longitude": 0.0650471
+        },
+        {
+          "latitude": 51.4111698,
+          "longitude": 0.0629285
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4105792,
+            "longitude": 0.0650471
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810873,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4106094,
+            "longitude": 0.0649388
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810872,
+          "scorecardOffsetFromReferenceYards": 9,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4106195,
+            "longitude": 0.0649027
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810872,
+          "scorecardOffsetFromReferenceYards": 12,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 11,
+      "greenCentre": {
+        "latitude": 51.4137867,
+        "longitude": 0.058152
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840066,
+      "holeOsmWayId": 849876700,
+      "mappedReferenceTee": {
+        "latitude": 51.4117023,
+        "longitude": 0.0621865
+      },
+      "mappedReferenceTeeOsmWayId": 849810881,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4117023,
+          "longitude": 0.0621865
+        },
+        {
+          "latitude": 51.4128339,
+          "longitude": 0.0593839
+        },
+        {
+          "latitude": 51.4137929,
+          "longitude": 0.0581474
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4117023,
+            "longitude": 0.0621865
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810881,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4117112,
+            "longitude": 0.0621644
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810881,
+          "scorecardOffsetFromReferenceYards": 2,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.411747,
+            "longitude": 0.0620758
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810881,
+          "scorecardOffsetFromReferenceYards": 10,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 12,
+      "greenCentre": {
+        "latitude": 51.414449,
+        "longitude": 0.0600698
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840067,
+      "holeOsmWayId": 849876701,
+      "mappedReferenceTee": {
+        "latitude": 51.4134103,
+        "longitude": 0.0593396
+      },
+      "mappedReferenceTeeOsmWayId": 849810883,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4134103,
+          "longitude": 0.0593396
+        },
+        {
+          "latitude": 51.4144508,
+          "longitude": 0.0600669
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4134103,
+            "longitude": 0.0593396
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810883,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4134706,
+            "longitude": 0.0593818
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810883,
+          "scorecardOffsetFromReferenceYards": 8,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4135686,
+            "longitude": 0.0594503
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810885,
+          "scorecardOffsetFromReferenceYards": 21,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 13,
+      "greenCentre": {
+        "latitude": 51.4133726,
+        "longitude": 0.0602959
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840068,
+      "holeOsmWayId": 849876702,
+      "mappedReferenceTee": {
+        "latitude": 51.4146908,
+        "longitude": 0.0605084
+      },
+      "mappedReferenceTeeOsmWayId": 849810887,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4146908,
+          "longitude": 0.0605084
+        },
+        {
+          "latitude": 51.4133627,
+          "longitude": 0.0602949
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4146908,
+            "longitude": 0.0605084
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810887,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4146663,
+            "longitude": 0.0605045
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810887,
+          "scorecardOffsetFromReferenceYards": 3,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4146335,
+            "longitude": 0.0604992
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810887,
+          "scorecardOffsetFromReferenceYards": 7,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 14,
+      "greenCentre": {
+        "latitude": 51.4109452,
+        "longitude": 0.0648104
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840069,
+      "holeOsmWayId": 849876703,
+      "mappedReferenceTee": {
+        "latitude": 51.4133307,
+        "longitude": 0.059668
+      },
+      "mappedReferenceTeeOsmWayId": 849810888,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4133307,
+          "longitude": 0.059668
+        },
+        {
+          "latitude": 51.4120106,
+          "longitude": 0.0623461
+        },
+        {
+          "latitude": 51.4112602,
+          "longitude": 0.0636237
+        },
+        {
+          "latitude": 51.410939,
+          "longitude": 0.0648349
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4133307,
+            "longitude": 0.059668
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810888,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4131675,
+            "longitude": 0.059999
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810889,
+          "scorecardOffsetFromReferenceYards": 32,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4127914,
+            "longitude": 0.0605571
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 850307799,
+          "scorecardOffsetFromReferenceYards": 91,
+          "snapToMappedTeeMetres": 9.12
+        }
+      }
+    },
+    {
+      "number": 15,
+      "greenCentre": {
+        "latitude": 51.4131093,
+        "longitude": 0.0618745
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840070,
+      "holeOsmWayId": 849876704,
+      "mappedReferenceTee": {
+        "latitude": 51.4110516,
+        "longitude": 0.0650425
+      },
+      "mappedReferenceTeeOsmWayId": 849810891,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4110516,
+          "longitude": 0.0650425
+        },
+        {
+          "latitude": 51.4126428,
+          "longitude": 0.0624489
+        },
+        {
+          "latitude": 51.4131199,
+          "longitude": 0.0618635
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4110516,
+            "longitude": 0.0650425
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810891,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4110862,
+            "longitude": 0.0649861
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810891,
+          "scorecardOffsetFromReferenceYards": 6,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4111208,
+            "longitude": 0.0649297
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810891,
+          "scorecardOffsetFromReferenceYards": 12,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 16,
+      "greenCentre": {
+        "latitude": 51.4148152,
+        "longitude": 0.0646139
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840071,
+      "holeOsmWayId": 849876705,
+      "mappedReferenceTee": {
+        "latitude": 51.4130865,
+        "longitude": 0.0613079
+      },
+      "mappedReferenceTeeOsmWayId": 849810893,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4130865,
+          "longitude": 0.0613079
+        },
+        {
+          "latitude": 51.414225,
+          "longitude": 0.0638883
+        },
+        {
+          "latitude": 51.4148461,
+          "longitude": 0.0646312
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4130865,
+            "longitude": 0.0613079
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810893,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4131387,
+            "longitude": 0.0614263
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810894,
+          "scorecardOffsetFromReferenceYards": 11,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4131577,
+            "longitude": 0.0614694
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810894,
+          "scorecardOffsetFromReferenceYards": 15,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 17,
+      "greenCentre": {
+        "latitude": 51.4135008,
+        "longitude": 0.0643319
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840072,
+      "holeOsmWayId": 849876706,
+      "mappedReferenceTee": {
+        "latitude": 51.4146153,
+        "longitude": 0.0648409
+      },
+      "mappedReferenceTeeOsmWayId": 849810898,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4146153,
+          "longitude": 0.0648409
+        },
+        {
+          "latitude": 51.4134764,
+          "longitude": 0.0643267
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4146153,
+            "longitude": 0.0648409
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810898,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4145678,
+            "longitude": 0.0648195
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810898,
+          "scorecardOffsetFromReferenceYards": 6,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4145124,
+            "longitude": 0.0647944
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810898,
+          "scorecardOffsetFromReferenceYards": 13,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    },
+    {
+      "number": 18,
+      "greenCentre": {
+        "latitude": 51.4116208,
+        "longitude": 0.0649922
+      },
+      "greenGeometryStatus": "centroid_of_osm_polygon_not_field_surveyed",
+      "greenOsmWayId": 849840073,
+      "holeOsmWayId": 849876707,
+      "mappedReferenceTee": {
+        "latitude": 51.4137136,
+        "longitude": 0.0636738
+      },
+      "mappedReferenceTeeOsmWayId": 849810899,
+      "mappedReferenceTeeColour": null,
+      "lineToGreen": [
+        {
+          "latitude": 51.4137136,
+          "longitude": 0.0636738
+        },
+        {
+          "latitude": 51.4121576,
+          "longitude": 0.0645037
+        },
+        {
+          "latitude": 51.4116144,
+          "longitude": 0.0649959
+        }
+      ],
+      "teeEstimates": {
+        "white": {
+          "position": {
+            "latitude": 51.4137136,
+            "longitude": 0.0636738
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810899,
+          "scorecardOffsetFromReferenceYards": 0,
+          "snapToMappedTeeMetres": 0
+        },
+        "yellow": {
+          "position": {
+            "latitude": 51.4136356,
+            "longitude": 0.0637154
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810900,
+          "scorecardOffsetFromReferenceYards": 10,
+          "snapToMappedTeeMetres": 0
+        },
+        "red": {
+          "position": {
+            "latitude": 51.4135888,
+            "longitude": 0.0637404
+          },
+          "status": "inferred_colour_not_verified",
+          "sourceTeeAreaOsmWayId": 849810900,
+          "scorecardOffsetFromReferenceYards": 16,
+          "snapToMappedTeeMetres": 0
+        }
+      }
+    }
+  ],
+  "teeSets": [
+    {
+      "id": "yellow",
+      "colour": "yellow",
+      "ratings": [
+        {
+          "sex": "male",
+          "courseRating": 64.7,
+          "slopeRating": 120,
+          "verification": "club_linked_rating_page",
+          "par": 66,
+          "sourceUrl": "https://eagleplus.uk.com/c/chislehurst/course-ratings-men/"
+        },
+        {
+          "sex": "female",
+          "courseRating": 70.1,
+          "slopeRating": 132,
+          "verification": "club_linked_rating_page",
+          "par": 69,
+          "sourceUrl": "https://eagleplus.uk.com/c/chislehurst/course-ratings-women/"
+        }
+      ],
+      "publishedHoleScoringAppliesToSex": "male",
+      "scoringVerification": "colour_column_from_club_website;other_sex_scoring_unverified",
+      "holes": [
+        {
+          "number": 1,
+          "par": 5,
+          "strokeIndex": 11,
+          "lengthYards": 488,
+          "tee": {
+            "latitude": 51.4116622,
+            "longitude": 0.0645775
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4147622,
+            "longitude": 0.0610465
+          }
+        },
+        {
+          "number": 2,
+          "par": 4,
+          "strokeIndex": 7,
+          "lengthYards": 346,
+          "tee": {
+            "latitude": 51.4152834,
+            "longitude": 0.0618505
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4159625,
+            "longitude": 0.0661283
+          }
+        },
+        {
+          "number": 3,
+          "par": 3,
+          "strokeIndex": 3,
+          "lengthYards": 220,
+          "tee": {
+            "latitude": 51.4159499,
+            "longitude": 0.0665181
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4171987,
+            "longitude": 0.0644704
+          }
+        },
+        {
+          "number": 4,
+          "par": 4,
+          "strokeIndex": 15,
+          "lengthYards": 309,
+          "tee": {
+            "latitude": 51.4174544,
+            "longitude": 0.0649399
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4155943,
+            "longitude": 0.0676713
+          }
+        },
+        {
+          "number": 5,
+          "par": 3,
+          "strokeIndex": 17,
+          "lengthYards": 100,
+          "tee": {
+            "latitude": 51.4151204,
+            "longitude": 0.0673618
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4156314,
+            "longitude": 0.0663559
+          }
+        },
+        {
+          "number": 6,
+          "par": 4,
+          "strokeIndex": 1,
+          "lengthYards": 397,
+          "tee": {
+            "latitude": 51.4158334,
+            "longitude": 0.0663186
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4149063,
+            "longitude": 0.0613593
+          }
+        },
+        {
+          "number": 7,
+          "par": 3,
+          "strokeIndex": 13,
+          "lengthYards": 126,
+          "tee": {
+            "latitude": 51.4147226,
+            "longitude": 0.0608076
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4137091,
+            "longitude": 0.0609901
+          }
+        },
+        {
+          "number": 8,
+          "par": 3,
+          "strokeIndex": 5,
+          "lengthYards": 196,
+          "tee": {
+            "latitude": 51.4134119,
+            "longitude": 0.0613451
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4124406,
+            "longitude": 0.0593035
+          }
+        },
+        {
+          "number": 9,
+          "par": 4,
+          "strokeIndex": 9,
+          "lengthYards": 338,
+          "tee": {
+            "latitude": 51.4120877,
+            "longitude": 0.0594225
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4106327,
+            "longitude": 0.0632065
+          }
+        },
+        {
+          "number": 10,
+          "par": 3,
+          "strokeIndex": 12,
+          "lengthYards": 167,
+          "tee": {
+            "latitude": 51.4106094,
+            "longitude": 0.0649388
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4111655,
+            "longitude": 0.0629332
+          }
+        },
+        {
+          "number": 11,
+          "par": 4,
+          "strokeIndex": 4,
+          "lengthYards": 408,
+          "tee": {
+            "latitude": 51.4117112,
+            "longitude": 0.0621644
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4137867,
+            "longitude": 0.058152
+          }
+        },
+        {
+          "number": 12,
+          "par": 3,
+          "strokeIndex": 18,
+          "lengthYards": 130,
+          "tee": {
+            "latitude": 51.4134706,
+            "longitude": 0.0593818
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.414449,
+            "longitude": 0.0600698
+          }
+        },
+        {
+          "number": 13,
+          "par": 3,
+          "strokeIndex": 8,
+          "lengthYards": 160,
+          "tee": {
+            "latitude": 51.4146663,
+            "longitude": 0.0605045
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4133726,
+            "longitude": 0.0602959
+          }
+        },
+        {
+          "number": 14,
+          "par": 5,
+          "strokeIndex": 2,
+          "lengthYards": 460,
+          "tee": {
+            "latitude": 51.4131675,
+            "longitude": 0.059999
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4109452,
+            "longitude": 0.0648104
+          }
+        },
+        {
+          "number": 15,
+          "par": 4,
+          "strokeIndex": 14,
+          "lengthYards": 349,
+          "tee": {
+            "latitude": 51.4110862,
+            "longitude": 0.0649861
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4131093,
+            "longitude": 0.0618745
+          }
+        },
+        {
+          "number": 16,
+          "par": 4,
+          "strokeIndex": 10,
+          "lengthYards": 320,
+          "tee": {
+            "latitude": 51.4131387,
+            "longitude": 0.0614263
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4148152,
+            "longitude": 0.0646139
+          }
+        },
+        {
+          "number": 17,
+          "par": 3,
+          "strokeIndex": 6,
+          "lengthYards": 138,
+          "tee": {
+            "latitude": 51.4145678,
+            "longitude": 0.0648195
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4135008,
+            "longitude": 0.0643319
+          }
+        },
+        {
+          "number": 18,
+          "par": 4,
+          "strokeIndex": 16,
+          "lengthYards": 267,
+          "tee": {
+            "latitude": 51.4136356,
+            "longitude": 0.0637154
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4116208,
+            "longitude": 0.0649922
+          }
+        }
+      ]
+    },
+    {
+      "id": "white",
+      "colour": "white",
+      "ratings": [
+        {
+          "sex": "male",
+          "courseRating": 65.5,
+          "slopeRating": 124,
+          "verification": "club_linked_rating_page",
+          "par": 66,
+          "sourceUrl": "https://eagleplus.uk.com/c/chislehurst/course-ratings-men/"
+        }
+      ],
+      "publishedHoleScoringAppliesToSex": "male",
+      "scoringVerification": "colour_column_from_club_website;other_sex_scoring_unverified",
+      "holes": [
+        {
+          "number": 1,
+          "par": 5,
+          "strokeIndex": 11,
+          "lengthYards": 504,
+          "tee": {
+            "latitude": 51.4115462,
+            "longitude": 0.064677
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4147622,
+            "longitude": 0.0610465
+          }
+        },
+        {
+          "number": 2,
+          "par": 4,
+          "strokeIndex": 7,
+          "lengthYards": 370,
+          "tee": {
+            "latitude": 51.4152144,
+            "longitude": 0.061554
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4159625,
+            "longitude": 0.0661283
+          }
+        },
+        {
+          "number": 3,
+          "par": 3,
+          "strokeIndex": 3,
+          "lengthYards": 235,
+          "tee": {
+            "latitude": 51.4158635,
+            "longitude": 0.0666593
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4171987,
+            "longitude": 0.0644704
+          }
+        },
+        {
+          "number": 4,
+          "par": 4,
+          "strokeIndex": 15,
+          "lengthYards": 313,
+          "tee": {
+            "latitude": 51.4174782,
+            "longitude": 0.0649035
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4155943,
+            "longitude": 0.0676713
+          }
+        },
+        {
+          "number": 5,
+          "par": 3,
+          "strokeIndex": 17,
+          "lengthYards": 105,
+          "tee": {
+            "latitude": 51.4150941,
+            "longitude": 0.0674124
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4156314,
+            "longitude": 0.0663559
+          }
+        },
+        {
+          "number": 6,
+          "par": 4,
+          "strokeIndex": 1,
+          "lengthYards": 409,
+          "tee": {
+            "latitude": 51.4158691,
+            "longitude": 0.0664661
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4149063,
+            "longitude": 0.0613593
+          }
+        },
+        {
+          "number": 7,
+          "par": 3,
+          "strokeIndex": 13,
+          "lengthYards": 139,
+          "tee": {
+            "latitude": 51.4148288,
+            "longitude": 0.0607883
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4137091,
+            "longitude": 0.0609901
+          }
+        },
+        {
+          "number": 8,
+          "par": 3,
+          "strokeIndex": 5,
+          "lengthYards": 206,
+          "tee": {
+            "latitude": 51.4134617,
+            "longitude": 0.06145
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4124406,
+            "longitude": 0.0593035
+          }
+        },
+        {
+          "number": 9,
+          "par": 4,
+          "strokeIndex": 9,
+          "lengthYards": 350,
+          "tee": {
+            "latitude": 51.4121381,
+            "longitude": 0.0592865
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4106327,
+            "longitude": 0.0632065
+          }
+        },
+        {
+          "number": 10,
+          "par": 3,
+          "strokeIndex": 12,
+          "lengthYards": 176,
+          "tee": {
+            "latitude": 51.4105792,
+            "longitude": 0.0650471
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4111655,
+            "longitude": 0.0629332
+          }
+        },
+        {
+          "number": 11,
+          "par": 4,
+          "strokeIndex": 4,
+          "lengthYards": 410,
+          "tee": {
+            "latitude": 51.4117023,
+            "longitude": 0.0621865
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4137867,
+            "longitude": 0.058152
+          }
+        },
+        {
+          "number": 12,
+          "par": 3,
+          "strokeIndex": 18,
+          "lengthYards": 138,
+          "tee": {
+            "latitude": 51.4134103,
+            "longitude": 0.0593396
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.414449,
+            "longitude": 0.0600698
+          }
+        },
+        {
+          "number": 13,
+          "par": 3,
+          "strokeIndex": 8,
+          "lengthYards": 163,
+          "tee": {
+            "latitude": 51.4146908,
+            "longitude": 0.0605084
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4133726,
+            "longitude": 0.0602959
+          }
+        },
+        {
+          "number": 14,
+          "par": 5,
+          "strokeIndex": 2,
+          "lengthYards": 492,
+          "tee": {
+            "latitude": 51.4133307,
+            "longitude": 0.059668
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4109452,
+            "longitude": 0.0648104
+          }
+        },
+        {
+          "number": 15,
+          "par": 4,
+          "strokeIndex": 14,
+          "lengthYards": 355,
+          "tee": {
+            "latitude": 51.4110516,
+            "longitude": 0.0650425
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4131093,
+            "longitude": 0.0618745
+          }
+        },
+        {
+          "number": 16,
+          "par": 4,
+          "strokeIndex": 10,
+          "lengthYards": 331,
+          "tee": {
+            "latitude": 51.4130865,
+            "longitude": 0.0613079
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4148152,
+            "longitude": 0.0646139
+          }
+        },
+        {
+          "number": 17,
+          "par": 3,
+          "strokeIndex": 6,
+          "lengthYards": 144,
+          "tee": {
+            "latitude": 51.4146153,
+            "longitude": 0.0648409
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4135008,
+            "longitude": 0.0643319
+          }
+        },
+        {
+          "number": 18,
+          "par": 4,
+          "strokeIndex": 16,
+          "lengthYards": 277,
+          "tee": {
+            "latitude": 51.4137136,
+            "longitude": 0.0636738
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4116208,
+            "longitude": 0.0649922
+          }
+        }
+      ]
+    },
+    {
+      "id": "red",
+      "colour": "red",
+      "ratings": [
+        {
+          "sex": "male",
+          "courseRating": 64.0,
+          "slopeRating": 118,
+          "verification": "secondary_source_only"
+        },
+        {
+          "sex": "female",
+          "courseRating": 68.9,
+          "slopeRating": 129,
+          "verification": "club_linked_rating_page",
+          "par": 69,
+          "sourceUrl": "https://eagleplus.uk.com/c/chislehurst/course-ratings-women/"
+        }
+      ],
+      "publishedHoleScoringAppliesToSex": "female",
+      "scoringVerification": "colour_column_from_club_website;other_sex_scoring_unverified",
+      "holes": [
+        {
+          "number": 1,
+          "par": 5,
+          "strokeIndex": 7,
+          "lengthYards": 479,
+          "tee": {
+            "latitude": 51.4117275,
+            "longitude": 0.0645216
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4147622,
+            "longitude": 0.0610465
+          }
+        },
+        {
+          "number": 2,
+          "par": 5,
+          "strokeIndex": 11,
+          "lengthYards": 365,
+          "tee": {
+            "latitude": 51.4152288,
+            "longitude": 0.0616158
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4159625,
+            "longitude": 0.0661283
+          }
+        },
+        {
+          "number": 3,
+          "par": 4,
+          "strokeIndex": 15,
+          "lengthYards": 232,
+          "tee": {
+            "latitude": 51.4158808,
+            "longitude": 0.0666311
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4171987,
+            "longitude": 0.0644704
+          }
+        },
+        {
+          "number": 4,
+          "par": 4,
+          "strokeIndex": 5,
+          "lengthYards": 306,
+          "tee": {
+            "latitude": 51.4174365,
+            "longitude": 0.0649671
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4155943,
+            "longitude": 0.0676713
+          }
+        },
+        {
+          "number": 5,
+          "par": 3,
+          "strokeIndex": 17,
+          "lengthYards": 94,
+          "tee": {
+            "latitude": 51.4151521,
+            "longitude": 0.067301
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4156314,
+            "longitude": 0.0663559
+          }
+        },
+        {
+          "number": 6,
+          "par": 4,
+          "strokeIndex": 1,
+          "lengthYards": 373,
+          "tee": {
+            "latitude": 51.4157619,
+            "longitude": 0.0660236
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4149063,
+            "longitude": 0.0613593
+          }
+        },
+        {
+          "number": 7,
+          "par": 3,
+          "strokeIndex": 13,
+          "lengthYards": 101,
+          "tee": {
+            "latitude": 51.4145183,
+            "longitude": 0.0608446
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4137091,
+            "longitude": 0.0609901
+          }
+        },
+        {
+          "number": 8,
+          "par": 3,
+          "strokeIndex": 9,
+          "lengthYards": 180,
+          "tee": {
+            "latitude": 51.4133322,
+            "longitude": 0.0611772
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4124406,
+            "longitude": 0.0593035
+          }
+        },
+        {
+          "number": 9,
+          "par": 4,
+          "strokeIndex": 3,
+          "lengthYards": 328,
+          "tee": {
+            "latitude": 51.4120457,
+            "longitude": 0.0595359
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4106327,
+            "longitude": 0.0632065
+          }
+        },
+        {
+          "number": 10,
+          "par": 3,
+          "strokeIndex": 12,
+          "lengthYards": 164,
+          "tee": {
+            "latitude": 51.4106195,
+            "longitude": 0.0649027
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4111655,
+            "longitude": 0.0629332
+          }
+        },
+        {
+          "number": 11,
+          "par": 5,
+          "strokeIndex": 4,
+          "lengthYards": 400,
+          "tee": {
+            "latitude": 51.411747,
+            "longitude": 0.0620758
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4137867,
+            "longitude": 0.058152
+          }
+        },
+        {
+          "number": 12,
+          "par": 3,
+          "strokeIndex": 18,
+          "lengthYards": 117,
+          "tee": {
+            "latitude": 51.4135686,
+            "longitude": 0.0594503
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.414449,
+            "longitude": 0.0600698
+          }
+        },
+        {
+          "number": 13,
+          "par": 3,
+          "strokeIndex": 14,
+          "lengthYards": 156,
+          "tee": {
+            "latitude": 51.4146335,
+            "longitude": 0.0604992
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4133726,
+            "longitude": 0.0602959
+          }
+        },
+        {
+          "number": 14,
+          "par": 5,
+          "strokeIndex": 6,
+          "lengthYards": 401,
+          "tee": {
+            "latitude": 51.4127914,
+            "longitude": 0.0605571
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4109452,
+            "longitude": 0.0648104
+          }
+        },
+        {
+          "number": 15,
+          "par": 4,
+          "strokeIndex": 2,
+          "lengthYards": 343,
+          "tee": {
+            "latitude": 51.4111208,
+            "longitude": 0.0649297
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4131093,
+            "longitude": 0.0618745
+          }
+        },
+        {
+          "number": 16,
+          "par": 4,
+          "strokeIndex": 10,
+          "lengthYards": 316,
+          "tee": {
+            "latitude": 51.4131577,
+            "longitude": 0.0614694
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4148152,
+            "longitude": 0.0646139
+          }
+        },
+        {
+          "number": 17,
+          "par": 3,
+          "strokeIndex": 8,
+          "lengthYards": 131,
+          "tee": {
+            "latitude": 51.4145124,
+            "longitude": 0.0647944
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4135008,
+            "longitude": 0.0643319
+          }
+        },
+        {
+          "number": 18,
+          "par": 4,
+          "strokeIndex": 16,
+          "lengthYards": 261,
+          "tee": {
+            "latitude": 51.4135888,
+            "longitude": 0.0637404
+          },
+          "teeStatus": "inferred_colour_not_verified",
+          "greenCentre": {
+            "latitude": 51.4116208,
+            "longitude": 0.0649922
+          }
+        }
+      ]
+    }
+  ],
+  "missingData": [
+    "Verified white/yellow/red colour labels and permanent reference markers for mapped tee areas.",
+    "Field verification of map-derived positions; source hole lines date from 2020 and tee/green polygons from 2021.",
+    "Female white rating not obtained.",
+    "Official hole-tour and overview yardages conflict on hole 1; confirm current scorecard before official scoring.",
+    "Female yellow total par is confirmed as 69, but the per-hole female yellow par and stroke-index allocation has not been confirmed. The yellow holes array contains the male scorecard. Do not use it for female Stableford without supplying the correct scoring profile.",
+    "Male red rating is secondary-only and is absent from the club-linked male rating page. Disable official male-red Stableford pending club confirmation of rating and hole scoring."
+  ]
+}
