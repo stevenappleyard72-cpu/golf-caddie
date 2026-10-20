@@ -231,6 +231,10 @@ function scorecardMarkup(round) {
     targetAssessed: total.targetAssessed + row.targetAssessed,
   }), { recordedShots: 0, putts: 0, grossStrokes: 0, stablefordPoints: 0, targetMet: 0, targetAssessed: 0 });
   const scoringAvailable = Boolean(round.scoringProfile?.supported);
+  const handicapEstimate = estimatePlayingLevel(round);
+  const indicativeHandicap = handicapEstimate.status === 'available'
+    ? handicapEstimate.indicatedHandicap
+    : '—';
   const value = (item) => item == null ? '—' : item;
 
   return `
@@ -260,6 +264,7 @@ function scorecardMarkup(round) {
         <span>Putts <b>${totals.putts}</b></span>
         <span>Score <b>${totals.grossStrokes}</b></span>
         <span>Stableford <b>${scoringAvailable ? totals.stablefordPoints : '—'}</b></span>
+        <span>Indicative handicap <b>${indicativeHandicap}</b></span>
         <span>Within target <b>${totals.targetMet}/${totals.targetAssessed}</b></span>
       </div>
       <p class="scorecard-note">H'cap shots are allocated from the playing handicap for your target Handicap Index. Picked-up holes score zero Stableford points.</p>
