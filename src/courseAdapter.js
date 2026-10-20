@@ -106,14 +106,13 @@ export function adaptCourseData(rawCourse) {
   };
 }
 
-export function getScoringProfile(course, sex, tee) {
-  return course.profileOptions.find((profile) => profile.sex === sex && profile.tee === tee) || {
-    sex,
+export function getScoringProfile(course, tee) {
+  return course.supportedProfiles.find((profile) => profile.tee === tee) || {
     tee,
-    label: `${sex} / ${tee}`,
+    label: tee,
     supported: false,
     distanceTrackingAvailable: true,
-    reason: 'This scoring combination is unavailable.',
+    reason: `No verified scoring profile is available for ${tee} tees.`,
     holes: null,
   };
 }

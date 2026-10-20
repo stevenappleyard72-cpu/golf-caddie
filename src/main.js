@@ -53,18 +53,19 @@ function setNotice(message = '', error = '') {
 }
 
 function profileDefaults() {
-  return state.profile || {
-    sex: 'male',
+  const profile = state.profile || {
     targetHandicap: 18,
-    driverDistance: 200,
-    fairwayDistance: 160,
     teeColour: 'yellow',
+  };
+  return {
+    ...profile,
+    teeColour: ['red', 'yellow'].includes(profile.teeColour) ? profile.teeColour : 'yellow',
   };
 }
 
 function scoringNotice(profile) {
   if (profile.supported) {
-    return `<p class="notice success">Stableford scoring is available for this sex and tee.</p>`;
+    return `<p class="notice success">Stableford scoring is available for these tees.</p>`;
   }
   return `<p class="notice warning"><strong>Distance tracking remains available.</strong> Scoring estimate unavailable: ${escapeHtml(profile.reason)}</p>`;
 }
@@ -102,7 +103,7 @@ function updateOfflineStatus() {
 
 function renderStartup() {
   const profile = profileDefaults();
-  const scoring = getScoringProfile(state.course, profile.sex, profile.teeColour);
+  const scoring = getScoringProfile(state.course, profile.teeColour);
   const canResume = state.round?.status === 'active';
   app.innerHTML = `
     <main class="app-shell startup-shell">
@@ -124,24 +125,12 @@ function renderStartup() {
       <form id="profile-form" class="card form-card">
         <div class="section-heading"><div><p class="step">Player setup</p><h2>Your playing target</h2></div></div>
         <div class="form-grid">
-          <label>Sex
-            <select name="sex" required>
-              <option value="male" ${profile.sex === 'male' ? 'selected' : ''}>Male</option>
-              <option value="female" ${profile.sex === 'female' ? 'selected' : ''}>Female</option>
-            </select>
-          </label>
           <label>Target Handicap Index
             <input name="targetHandicap" type="number" min="-10" max="54" step="0.1" value="${profile.targetHandicap}" required>
           </label>
-          <label>Typical driver distance <span>yards, total</span>
-            <input name="driverDistance" type="number" min="1" max="400" step="1" value="${profile.driverDistance}" required>
-          </label>
-          <label>Longest reliable fairway shot <span>yards, total</span>
-            <input name="fairwayDistance" type="number" min="1" max="350" step="1" value="${profile.fairwayDistance}" required>
-          </label>
           <label>Tee colour
             <select name="teeColour" required>
-              ${['red', 'yellow', 'white'].map((tee) => `<option value="${tee}" ${profile.teeColour === tee ? 'selected' : ''}>${tee[0].toUpperCase()}${tee.slice(1)}</option>`).join('')}
+              ${['red', 'yellow'].map((tee) => `<option value="${tee}" ${profile.teeColour === tee ? 'selected' : ''}>${tee[0].toUpperCase()}${tee.slice(1)}</option>`).join('')}
             </select>
           </label>
           <label>Round input
@@ -182,16 +171,11 @@ function currentShotGoal(round, hole, ball) {
     startDistanceYards: distanceYards(ball.position, hole.greenCentre),
     routeClear: ball.routeClear,
     isTeeShot: !hole.events.some((event) => event.type === 'stroke'),
-    driverDistance: round.profile.driverDistance,
-    fairwayDistance: round.profile.fairwayDistance,
     targetHandicap: round.profile.targetHandicap,
   });
 }
 
 function goalMarkup(goal) {
-  if (goal.kind === 'recovery') {
-    return `<strong>Next goal</strong><span>Regain a clear route. No precise yardage is invented from the route flag alone.</span>`;
-  }
   return `<strong>Next goal</strong><span>Finish within ${Math.round(goal.maximumEndDistanceYards)} yd of the green.</span>`;
 }
 
@@ -377,10 +361,7 @@ async function persistRound(nextRound, message) {
 function readProfileForm(form) {
   const data = new FormData(form);
   return validateProfile({
-    sex: data.get('sex'),
     targetHandicap: data.get('targetHandicap'),
-    driverDistance: data.get('driverDistance'),
-    fairwayDistance: data.get('fairwayDistance'),
     teeColour: data.get('teeColour'),
   });
 }
@@ -434,9 +415,9 @@ function downloadRound() {
 }
 
 app.addEventListener('change', (event) => {
-  if (event.target.matches('#profile-form select[name="sex"], #profile-form select[name="teeColour"]')) {
+  if (event.target.matches('#profile-form select[name="teeColour"]')) {
     const form = document.querySelector('#profile-form');
-    const scoring = getScoringProfile(state.course, form.elements.sex.value, form.elements.teeColour.value);
+    const scoring = getScoringProfile(state.course, form.elements.teeColour.value);
     document.querySelector('#scoring-notice').innerHTML = scoringNotice(scoring);
   }
   if (event.target.id === 'import-file' && event.target.files[0]) {
@@ -472,7 +453,7 @@ app.addEventListener('submit', async (event) => {
   try {
     if (event.target.id === 'profile-form') {
       const profile = readProfileForm(event.target);
-      const scoringProfile = getScoringProfile(state.course, profile.sex, profile.teeColour);
+      const scoringProfile = getScoringProfile(state.course, profile.teeColour);
       const holes = getRoundHoles(state.course, profile.teeColour, scoringProfile);
       const mode = new FormData(event.target).get('mode');
       state.profile = profile;

@@ -43,7 +43,7 @@ class FakeIndexedDb {
 test('profile and active round persist, load, and clear through IndexedDB', async () => {
   globalThis.indexedDB = new FakeIndexedDb();
   const storage = await import(`../src/storage.js?test=${Date.now()}`);
-  const profile = { sex: 'female', teeColour: 'red', targetHandicap: 20, driverDistance: 170, fairwayDistance: 135 };
+  const profile = { teeColour: 'red', targetHandicap: 20 };
   const round = { schemaVersion: 1, id: 'round-1', status: 'active' };
   await storage.saveProfile(profile);
   await storage.saveRound(round);

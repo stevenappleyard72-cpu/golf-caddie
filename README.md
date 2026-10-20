@@ -22,12 +22,12 @@ Before going offline, open the installed app once while connected and wait for *
 
 ## Current scope
 
-- Profile fields: sex, target Handicap Index, typical total driver distance, longest reliable total fairway distance and tee colour.
+- New-round fields: target Handicap Index, tee colour (red or yellow) and input mode.
 - Round state, calculations and persistence stay in the browser.
 - Simulation and GPS recording use the same round engine.
-- Only male/yellow, male/white and female/red have complete supported scoring profiles in the supplied data. Other combinations retain distance tracking without substituting another profile.
+- Stableford selects the verified scoring profile from tee colour alone: yellow uses the supplied yellow-tee profile and red uses the supplied red-tee profile.
 - Course tee colours and green centres are provisional as documented in `Documents/GolfCaddie_Handover/chislehurst_course/README.md`.
-- Capability coaching is implemented as a transparent provisional model documented in `docs/capability-coaching-model.md`. It gives factual shot feedback, reachable next targets and target-success totals without unsupported shot-handicap labels.
+- Coaching targets use `docs/golf_expected_distance_lookup.csv`, based only on current distance from the mapped green centre and target Handicap Index. Interpolation and boundary rules are documented in `docs/capability-coaching-model.md`.
 - After each finished hole, supported scoring profiles show Stableford points at the player's target handicap and one approximate handicap indicated by the completed-hole scores. The estimate does not change during a hole and is not an official Handicap Index or score for posting.
 - `docs/benchmark-model.md` and `scripts/benchmark_calculations.py` are rejected audit artifacts and are not imported by runtime code.
 

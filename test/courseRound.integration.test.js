@@ -8,8 +8,8 @@ import { simulatedEndpointFromRemainingDistance } from '../src/simulation.js';
 const sourceUrl = new URL('../Documents/GolfCaddie_Handover/chislehurst_course/chislehurst-course.json', import.meta.url);
 const raw = JSON.parse(fs.readFileSync(sourceUrl, 'utf8'));
 const course = adaptCourseData(raw);
-const profile = { sex: 'male', targetHandicap: 18, driverDistance: 200, fairwayDistance: 160, teeColour: 'yellow' };
-const scoringProfile = getScoringProfile(course, profile.sex, profile.teeColour);
+const profile = { targetHandicap: 18, teeColour: 'yellow' };
+const scoringProfile = getScoringProfile(course, profile.teeColour);
 const holes = getRoundHoles(course, profile.teeColour, scoringProfile);
 
 test('real hole 1 coordinates and quality flags flow into the round engine unchanged', () => {
@@ -35,7 +35,7 @@ test('simulation derives a round endpoint without mutating retained course posit
   assert.deepEqual(holes[0].greenCentre, greenBefore);
 });
 
-test('meeting the simulated distance still misses when the new route is not clear', () => {
+test('meeting the lookup distance succeeds independently of the route flag', () => {
   const newRound = () => createRound({ profile, course, scoringProfile, holes, mode: 'simulation' });
   const startDistance = newRound().holes[0].teeOrigin;
   const endpoint = simulatedEndpointFromRemainingDistance(startDistance, holes[0].greenCentre, 0);
@@ -43,5 +43,5 @@ test('meeting the simulated distance still misses when the new route is not clea
   const clear = recordStroke(newRound(), { endpoint, routeEnd: true, source: 'simulation' });
   const blocked = recordStroke(newRound(), { endpoint, routeEnd: false, source: 'simulation' });
   assert.equal(clear.holes[0].events[0].assessment.targetMet, true);
-  assert.equal(blocked.holes[0].events[0].assessment.targetMet, false);
+  assert.equal(blocked.holes[0].events[0].assessment.targetMet, true);
 });

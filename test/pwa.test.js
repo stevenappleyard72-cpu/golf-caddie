@@ -29,6 +29,15 @@ test('startup exposes an Android install action and safe mobile viewport', () =>
   assert.match(css, /@media \(max-width: 560px\)/);
 });
 
+test('new-round setup asks only for target handicap, tee and input mode', () => {
+  const main = read('src/main.js');
+  assert.doesNotMatch(main, /name="sex"/);
+  assert.doesNotMatch(main, /name="driverDistance"/);
+  assert.doesNotMatch(main, /name="fairwayDistance"/);
+  assert.match(main, /name="targetHandicap"/);
+  assert.match(main, /name="teeColour"/);
+});
+
 test('runtime registers a service worker that caches the app and course endpoint', () => {
   const main = read('src/main.js');
   const worker = read('public/sw.js');

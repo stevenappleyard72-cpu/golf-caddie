@@ -13,7 +13,7 @@ import {
   validateImportedRound,
 } from '../src/roundEngine.js';
 
-const profile = { sex: 'male', targetHandicap: 18, driverDistance: 205, fairwayDistance: 165, teeColour: 'yellow' };
+const profile = { targetHandicap: 18, teeColour: 'yellow' };
 const course = { id: 'test-course', name: 'Test Course', coordinateSystem: 'WGS84' };
 const scoringProfile = { supported: true, sex: 'male', tee: 'yellow', courseRating: 65, slopeRating: 120, par: 66 };
 const holes = Array.from({ length: 18 }, (_, index) => ({
@@ -53,7 +53,7 @@ test('stroke endpoints preserve route state and use the previous endpoint as the
   const events = getCurrentHole(round).events;
   assert.deepEqual(events[0].startPosition, holes[0].teeOrigin);
   assert.deepEqual(events[0].endpoint, first);
-  assert.equal(events[0].assessment.modelVersion, 'capability-coach-v1-provisional');
+  assert.equal(events[0].assessment.modelVersion, 'expected-distance-lookup-v1');
   assert.equal(events[0].assessment.context, 'tee-shot');
   assert.equal(typeof events[0].assessment.targetMet, 'boolean');
   assert.equal(events[1].routeStart, false);
@@ -117,9 +117,17 @@ test('a full 18-hole flow completes and can undo the final finish', () => {
 test('exported JSON validates for import and rejects another course', () => {
   const exported = JSON.parse(JSON.stringify(newRound()));
   exported.profile.age = 72;
+  exported.profile.sex = 'male';
+  exported.profile.driverDistance = 205;
+  exported.profile.fairwayDistance = 165;
+  exported.scoringProfile.sex = 'male';
   const imported = validateImportedRound(exported, 'test-course');
   assert.equal(imported.id, exported.id);
   assert.equal('age' in imported.profile, false);
+  assert.equal('sex' in imported.profile, false);
+  assert.equal('driverDistance' in imported.profile, false);
+  assert.equal('fairwayDistance' in imported.profile, false);
+  assert.equal('sex' in imported.scoringProfile, false);
   assert.throws(() => validateImportedRound(exported, 'another-course'), /different course/);
 });
 
@@ -131,7 +139,7 @@ test('schema-v1 rounds migrate without inventing assessments for historical shot
   legacy.holes[0].events.push({ type: 'stroke', endpoint: holes[0].greenCentre });
   const migrated = validateImportedRound(legacy, 'test-course');
   assert.equal(migrated.schemaVersion, 2);
-  assert.equal(migrated.benchmarkModelVersion, 'capability-coach-v1-provisional');
+  assert.equal(migrated.benchmarkModelVersion, 'expected-distance-lookup-v1');
   assert.equal(migrated.holes[0].events[0].assessmentStatus, 'legacy_unassessed');
   assert.equal('age' in migrated.profile, false);
 });

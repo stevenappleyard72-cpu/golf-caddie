@@ -72,7 +72,7 @@ test('round scoring ignores strokes on the open hole until that hole is finished
   assert.equal(duringNextHole.indicatedHandicap, before.indicatedHandicap);
 });
 
-test('playing-level estimate stays unavailable without a complete sex and tee profile', () => {
+test('playing-level estimate stays unavailable without a complete tee scoring profile', () => {
   const result = estimatePlayingLevel({ scoringProfile: { supported: false, reason: 'unsupported' }, holes: [] });
   assert.deepEqual(result, { status: 'unavailable', reason: 'unsupported' });
 });

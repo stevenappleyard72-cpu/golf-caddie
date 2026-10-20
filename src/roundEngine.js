@@ -28,14 +28,10 @@ function finiteNumber(value, label, minimum = -Infinity) {
 }
 
 export function validateProfile(profile) {
-  if (!['male', 'female'].includes(profile?.sex)) throw new Error('Sex is required');
   if (!['red', 'yellow', 'white'].includes(profile?.teeColour)) throw new Error('Tee colour is invalid');
   const targetHandicap = finiteNumber(profile.targetHandicap, 'Target Handicap Index', -10);
-  const driverDistance = finiteNumber(profile.driverDistance, 'Typical driver distance', 1);
-  const fairwayDistance = finiteNumber(profile.fairwayDistance, 'Reliable fairway distance', 1);
   if (targetHandicap > 54) throw new Error('Target Handicap Index must be 54 or lower');
-  if (driverDistance > 400 || fairwayDistance > 350) throw new Error('Distance capability is outside the supported range');
-  return { sex: profile.sex, targetHandicap, driverDistance, fairwayDistance, teeColour: profile.teeColour };
+  return { targetHandicap, teeColour: profile.teeColour };
 }
 
 export function createRound({ profile, course, scoringProfile, holes, mode = 'simulation' }) {
@@ -55,13 +51,12 @@ export function createRound({ profile, course, scoringProfile, holes, mode = 'si
     scoringProfile: scoringProfile.supported
       ? {
           supported: true,
-          sex: scoringProfile.sex,
           tee: scoringProfile.tee,
           courseRating: scoringProfile.courseRating,
           slopeRating: scoringProfile.slopeRating,
           par: scoringProfile.par,
         }
-      : { supported: false, sex: validProfile.sex, tee: validProfile.teeColour, reason: scoringProfile.reason },
+      : { supported: false, tee: validProfile.teeColour, reason: scoringProfile.reason },
     benchmarkStatus: 'active_provisional',
     benchmarkModelVersion: BENCHMARK_MODEL_VERSION,
     currentHoleIndex: 0,
@@ -118,8 +113,6 @@ function appendStroke(next, hole, { endpoint, routeEnd, accuracy, source, timest
     startDistanceYards: distanceYards(start.position, hole.greenCentre),
     routeClear: start.routeClear,
     isTeeShot,
-    driverDistance: next.profile.driverDistance,
-    fairwayDistance: next.profile.fairwayDistance,
     targetHandicap: next.profile.targetHandicap,
   });
   const reportedAccuracy = accuracy == null ? null : finiteNumber(accuracy, 'Accuracy', 0);
@@ -240,6 +233,8 @@ export function validateImportedRound(value, courseId) {
     }
   }
   imported.profile = profile;
+  if (imported.scoringProfile) delete imported.scoringProfile.sex;
+  imported.benchmarkModelVersion = BENCHMARK_MODEL_VERSION;
   return imported;
 }
 

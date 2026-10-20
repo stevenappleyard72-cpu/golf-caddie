@@ -1,171 +1,77 @@
-# Capability coaching model v1
+# Expected-distance coaching model v1
 
-Status: implemented, versioned and **provisional**. This replaces the rejected proposal for runtime use. The rejected document and Python script remain audit artifacts and are not imported by the app.
+Status: implemented and versioned as `expected-distance-lookup-v1`.
 
-## Product decision: no shot-handicap labels
+## Product decision
 
-No empirical shot-by-handicap dataset has been supplied, and the available course data cannot justify labels such as “12-handicap shot”. The app therefore does not invent them.
+The coaching target is determined by exactly two inputs:
 
-The practical replacement separates two outputs:
+- the ball's current straight-line distance from the mapped green centre; and
+- the player's target Handicap Index.
 
-1. **Factual shot assessment**, independent of target handicap: context, shot distance, radial progress, remaining distance, forward/stationary/backward direction, green-plane overshoot and route change.
-2. **Coaching target success**, using the target Handicap Index only as a provisional difficulty setting. The target is stored before the shot and the endpoint is tested against that same target.
+Age, sex, typical driver distance and longest reliable fairway distance are not inputs. Route state and whether the shot is a tee shot remain factual context, but they do not change the expected finishing distance or the target-success decision.
 
-This preserves useful feedback without presenting calibration assumptions as evidence about playing ability.
+## Lookup source
 
-## Inputs and contexts
+The supplied table in `docs/golf_expected_distance_lookup.csv` is the source for expected finishing distances. It contains target Handicap Index rows 0–36 and starting-distance columns from 10 to 300 yards in 10-yard steps.
 
-Distances are WGS84 great-circle distances in yards.
+Runtime data is stored in `src/expectedDistanceLookup.js`. An automated test compares every runtime value with the CSV so the build fails if the two copies diverge.
 
-Contexts are determined from the start state:
+## Lookup rules
 
-- `recovery` when the route is marked blocked;
-- `tee-shot` for the first stroke event on a hole;
-- `short-approach` for a clear non-tee shot starting within 60 yards;
-- `fairway-shot` for other clear non-tee shots.
+For an exact row and column, the model returns the table value unchanged. For example, a shot starting 100 yards from the green at target Handicap Index 12 has an expected finishing distance of 17.7 yards.
 
-Tee shots use stated typical driver distance. All non-tee distance goals use stated longest reliable fairway distance. Neither value is inflated and no age/sex strength factor exists. Sex is used only for course scoring-profile selection.
+For values between cells:
 
-## Target rules
+- starting distance is linearly interpolated between the adjacent 10-yard columns;
+- decimal target handicaps are linearly interpolated between adjacent handicap rows.
 
-Let `H = clamp(target Handicap Index, 0, 54)`.
+Boundary behaviour is explicit:
 
-The provisional coaching parameters are:
+- from 0–10 yards, the result is linearly interpolated from `(0, 0)` to the 10-yard table cell;
+- beyond 300 yards, the expected progress at 300 yards is held constant, so each yard added to the start is also added to the expected finish;
+- target handicaps below 0 use the H0 row;
+- target handicaps above 36 use the H36 row.
 
-```
-capabilityUtilisation = (92 - 0.5 * H) / 100
-terminalRadiusYards = 8 + H * (22 / 54)
-```
+This preserves the supplied lookup values without inventing capability inputs or requiring an unrealistic finish near the green from starting distances beyond the table.
 
-Thus the utilisation setting ranges from 92% at H0 to 65% at H54, and the terminal radius ranges from 8 to 30 yards. These are transparent coaching-difficulty assumptions, not measured handicap statistics.
+## Target and assessment
 
-For a clear-route shot:
+Before each shot, the app stores:
 
-```
-capability = tee shot ? driver distance : reliable fairway distance
+- start distance;
+- target Handicap Index;
+- expected finishing distance from the lookup;
+- required progress (`start distance - expected finishing distance`);
+- model version and lookup source.
 
-if startDistance <= capability:
-    maximumEndDistance = min(startDistance, terminalRadiusYards)
-else:
-    requiredProgress = capability * capabilityUtilisation
-    maximumEndDistance = startDistance - requiredProgress
-```
+A sufficiently accurate endpoint meets the target when:
 
-This guarantees `requiredProgress <= capability`. If the green-centre tolerance is not reachable in one shot, the target is a capability-bounded lay-up.
+`actual finishing distance <= expected finishing distance`
 
-For a recovery start, a Yes/No route flag cannot identify a safe line or defensible yardage. The target is therefore explicitly qualitative: restore a clear route. No precise recovery distance is invented. Target success requires `route_end = clear`.
+Route state does not alter that comparison. Route changes, shot distance, radial progress, direction and green-plane overshoot remain available as factual feedback.
 
-For clear-route starts, target success requires both:
+An accepted GPS fix worse than 23 metres is stored but excluded from target-success totals.
 
-```
-endDistance <= maximumEndDistance
-route_end = clear
-```
+## Stableford and indicative handicap
 
-A shot ending blocked cannot be rewarded for distance alone. An accepted GPS fix worse than 23 metres is stored but excluded from target-success totals.
+Stableford is separate from the shot-distance lookup. The player selects a tee colour rather than a sex:
 
-## Factual assessment
+- yellow tees use the verified yellow-tee rating and hole-scoring profile;
+- red tees use the verified red-tee rating and hole-scoring profile.
 
-```
-progress = startDistance - endDistance
-```
+The underlying supplied course data still records the provenance of each rating, but sex is not a player input and is not used to select between profiles after tee colour is chosen. White is retained only for compatibility with previously saved rounds and is not offered for new rounds for now.
 
-- `progress > 2`: forward;
-- `progress < -2`: backward;
-- otherwise: stationary within a provisional two-yard GPS/noise tolerance.
+Course Handicap, stroke allocation, Stableford points and the provisional indicative handicap continue to use the selected tee's verified course rating, slope, par and per-hole stroke index.
 
-Backwards progress always has one sign: negative. A backwards recovery can still meet its separate recovery target if it restores a clear route. A clear-route shot that becomes blocked records a worsened route and cannot meet its target.
+## Saved-round compatibility
 
-The model also records actual endpoint-to-endpoint shot distance. It never reduces the entire result to raw distance gained and never converts a shot into a handicap band.
+Older profiles remain importable. Age, sex and capability-distance fields are discarded during validation. Historical shot assessments retain their stored model version and values; new shots use `expected-distance-lookup-v1`.
 
-## Executed worked examples
+## Limitations
 
-The independent `npm run check:model` script executes these cases and grid invariants.
-
-### Stated 150-yard driver
-
-From 300 yards at H12:
-
-- capability = 150 yards, unchanged;
-- utilisation = 86%;
-- required progress = 129 yards;
-- target endpoint = 171 yards from centre.
-
-### Previously impossible target
-
-From 190 yards with a 120-yard driver at H12:
-
-- capability = 120 yards;
-- required progress = 103.2 yards;
-- target endpoint = 86.8 yards;
-- 103.2 is no greater than the 120-yard capability.
-
-The rejected 142.2-yard demand is not reproduced.
-
-### Poor 70-yard drive
-
-From 220 to 150 yards:
-
-- progress = 70 yards;
-- the H12 goal is missed;
-- no handicap label is generated.
-
-### 25-yard short approach to centre
-
-- context = short approach;
-- progress = 25 yards;
-- endpoint = 0 yards;
-- target met;
-- no handicap label is generated.
-
-### Backwards recovery
-
-From 60 to 80 yards while changing blocked to clear:
-
-- progress = -20 yards;
-- direction = backward;
-- route change = improved;
-- recovery target met.
-
-This makes the distance fact and recovery outcome coexist without conflicting definitions.
-
-## Independent invariant checks
-
-`npm run check:model` checks 33,000 combinations across tee/fairway contexts, capabilities from 60–250 yards, starts from 10–600 yards and target handicaps 0–54. It asserts:
-
-- no required progress exceeds the applicable capability;
-- increasing target handicap never makes a distance goal stricter;
-- factual shot fields do not change with target handicap;
-- Stableford candidate points do not decrease as candidate handicap increases;
-- every rejected-model failure listed above has an executable regression check.
-
-## Stableford-style playing-level comparison
-
-This is separate from shot assessment. It runs only for a complete supported sex/tee scoring profile.
-
-Verified rules used:
-
-- Course Handicap formula: `Handicap Index * (Slope / 113) + (Course Rating - par)`.
-- For a 100% allowance, Playing Handicap is the Course Handicap rounded to the nearest whole number at the final step.
-- Positive strokes follow ascending stroke index and repeat above 18; plus handicaps give strokes back starting at stroke index 18.
-- Stableford compares gross strokes, including penalties, after handicap strokes to par; picked-up/no-score holes receive zero points.
-
-After each hole is finished, the app shows two plain-language figures. The first is the Stableford points produced by the completed-hole scores when strokes are received at the player's target Handicap Index. The second compares candidate Handicap Index values from -5 through 54 with two net Stableford points per completed hole and displays the midpoint of the equally closest candidates as an approximate handicap indicated so far. Stableford's zero-point floor limits the effect of disastrous holes. Open-hole strokes are excluded, so neither figure changes shot by shot.
-
-The single indicated value is a UI simplification of an often broad candidate range, especially early in a round. It is provisional, not an official Handicap Index, Score Differential or score for posting.
-
-Authoritative sources checked 18 October 2026:
-
-- USGA Rules of Handicapping, Rule 6.1a: https://www.usga.org/content/usga/home-page/handicapping/roh/Content/rules/6%201a%2018%20holes.htm
-- USGA Rules of Handicapping, Rule 6.2a: https://www.usga.org/handicapping/roh/Content/rules/6%202a%20Standard%20Calculation.htm
-- USGA Appendix E, Stroke Index Allocation: https://www.usga.org/handicapping/roh/Content/rules/Appendix%20E%20Stroke%20Index%20Allocation.htm
-- R&A Rules of Golf, Rule 21.1 Stableford: https://www.randa.org/en/rog/the-rules-of-golf/rule-21
-
-## Remaining limitations
-
-- Coaching thresholds are not derived from a shot-level player dataset.
-- Distance to mapped green centre is not distance to the pin and cannot reveal lie, elevation, wind, hazards or intended line.
-- A binary route flag supports only a route-restoration goal, not a safe recovery waypoint.
-- Radial progress and straight-line shot distance cannot fully judge a dogleg or deliberate lay-up.
+- The lookup describes expected finishing distance from the green centre, not distance to the pin.
+- It does not account for lie, elevation, wind, hazards, doglegs or intended line.
+- The H0 and H36 rows are used outside the table's handicap range rather than extrapolating unsupported values.
 - Tee coordinates and green centres retain all limitations in the supplied course README.
-- The indicated handicap is a local completed-hole comparison, not a WHS Handicap Index calculation and not suitable for score submission.
+- The indicative handicap is a local completed-hole comparison, not an official WHS Handicap Index or score for posting.
