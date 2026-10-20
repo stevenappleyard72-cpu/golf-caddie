@@ -33,6 +33,42 @@ export function stablefordPoints({ par, grossStrokes, strokes }) {
   return Math.max(0, 2 + par - netStrokes);
 }
 
+export function holeScorecard(round) {
+  const scoringAvailable = Boolean(round.scoringProfile?.supported);
+  const handicap = scoringAvailable
+    ? playingHandicap(round.profile.targetHandicap, round.scoringProfile)
+    : null;
+
+  return round.holes.map((hole) => {
+    const completed = hole.status === 'finished' || hole.status === 'picked-up';
+    const targetAssessments = (hole.events || [])
+      .filter((event) => event.type === 'stroke' && event.assessment?.targetMet != null);
+    const handicapStrokes = scoringAvailable && Number.isFinite(Number(hole.strokeIndex))
+      ? strokesReceived(handicap, hole.strokeIndex)
+      : null;
+    const grossStrokes = completed ? (hole.result?.grossStrokes ?? null) : null;
+
+    return {
+      number: hole.number,
+      par: hole.par ?? null,
+      strokeIndex: hole.strokeIndex ?? null,
+      recordedShots: completed
+        ? (hole.events || []).filter((event) => event.type === 'stroke').length
+        : null,
+      handicapStrokes,
+      putts: completed ? (hole.result?.putts ?? 0) : null,
+      grossStrokes,
+      pickedUp: completed && hole.result?.pickedUp === true,
+      stablefordPoints: completed && scoringAvailable && Number.isFinite(Number(hole.par))
+        ? stablefordPoints({ par: hole.par, grossStrokes, strokes: handicapStrokes })
+        : null,
+      targetMet: targetAssessments.filter((event) => event.assessment.targetMet === true).length,
+      targetAssessed: targetAssessments.length,
+      completed,
+    };
+  });
+}
+
 export function compareCandidate(round, handicapIndex) {
   if (!round.scoringProfile?.supported) return null;
   const handicap = playingHandicap(handicapIndex, round.scoringProfile);

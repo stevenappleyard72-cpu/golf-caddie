@@ -151,6 +151,36 @@ details summary { cursor: pointer; color: var(--navy); font-weight: 800; }
 .event-list li { display: grid; gap: 3px; padding: 10px 0; border-top: 1px solid var(--line); }
 .event-list li span { color: var(--muted); font-size: 0.78rem; }
 .event-list li.empty { display: block; color: var(--muted); font-size: 0.86rem; }
+.scorecard-card { padding: 0; overflow: visible; }
+.scorecard-heading {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  align-items: center;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--line);
+  border-radius: 18px 18px 0 0;
+  background: rgba(255, 253, 247, 0.98);
+  box-shadow: 0 8px 14px rgba(16, 45, 60, 0.08);
+  backdrop-filter: blur(8px);
+}
+.scorecard-key { color: var(--muted); font-size: 0.72rem; white-space: nowrap; }
+.scorecard-list { display: grid; gap: 10px; padding: 0 14px 14px; }
+.scorecard-hole { overflow: hidden; border: 1px solid var(--line); border-radius: 13px; background: rgba(220, 239, 228, 0.22); }
+.scorecard-hole h3 { display: flex; justify-content: space-between; margin: 0; padding: 11px 13px; background: #f2f4ef; color: var(--navy); font-size: 0.92rem; }
+.scorecard-hole h3 span { color: var(--muted); font-size: 0.76rem; }
+.scorecard-hole dl { display: grid; grid-template-columns: 1fr 1fr; margin: 0; }
+.scorecard-hole dl div { display: flex; justify-content: space-between; gap: 8px; padding: 9px 12px; border-top: 1px solid var(--line); }
+.scorecard-hole dl div:nth-child(odd) { border-right: 1px solid var(--line); }
+.scorecard-hole dl .target-result { grid-column: 1 / -1; border-right: 0; }
+.scorecard-hole dt { color: var(--muted); font-size: 0.72rem; }
+.scorecard-hole dd { margin: 0; color: var(--navy); font-size: 0.82rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.scorecard-empty { margin: 0; padding: 18px 4px; color: var(--muted); font-size: 0.82rem; }
+.scorecard-totals { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 13px 18px; border-top: 1px solid var(--line); background: var(--green-light); color: var(--navy); font-size: 0.76rem; }
+.scorecard-totals strong { width: 100%; }
+.scorecard-totals span { color: var(--muted); }
+.scorecard-totals b { color: var(--navy); }
+.scorecard-note { margin: 0; padding: 12px 18px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.72rem; line-height: 1.45; }
 .utility-row { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; margin: 16px 0; }
 .file-button { position: relative; cursor: pointer; }
 .file-button input { position: absolute; width: 1px; height: 1px; opacity: 0; }
@@ -169,6 +199,11 @@ footer { padding: 18px 5px; color: var(--muted); font-size: 0.7rem; line-height:
   .course-mark { width: 52px; height: 52px; flex-basis: 52px; }
   .resume-card { align-items: stretch; flex-direction: column; }
   .section-heading { align-items: stretch; flex-direction: column; }
+  .scorecard-heading { gap: 6px; }
+  .scorecard-key { white-space: normal; }
+  .scorecard-hole dl { grid-template-columns: 1fr; }
+  .scorecard-hole dl div:nth-child(odd) { border-right: 0; }
+  .scorecard-hole dl .target-result { grid-column: auto; }
   .action-card .section-heading { display: grid; grid-template-columns: minmax(0, 1fr) 118px; align-items: end; }
   .route-control { width: 100%; }
   .record-actions { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }

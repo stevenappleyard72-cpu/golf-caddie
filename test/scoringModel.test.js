@@ -4,6 +4,7 @@ import {
   compareCandidate,
   courseHandicap,
   estimatePlayingLevel,
+  holeScorecard,
   playingHandicap,
   stablefordPoints,
   strokesReceived,
@@ -74,4 +75,51 @@ test('round scoring ignores strokes on the open hole until that hole is finished
 test('playing-level estimate stays unavailable without a complete sex and tee profile', () => {
   const result = estimatePlayingLevel({ scoringProfile: { supported: false, reason: 'unsupported' }, holes: [] });
   assert.deepEqual(result, { status: 'unavailable', reason: 'unsupported' });
+});
+
+test('hole scorecard exposes target-handicap allocation, Stableford and target shot counts', () => {
+  const round = {
+    scoringProfile: { supported: true, slopeRating: 113, courseRating: 72, par: 72 },
+    profile: { targetHandicap: 19 },
+    holes: [
+      {
+        number: 1, par: 4, strokeIndex: 1, status: 'finished',
+        result: { grossStrokes: 6, putts: 2 },
+        events: [
+          { type: 'stroke', assessment: { targetMet: true } },
+          { type: 'stroke', assessment: { targetMet: false } },
+          { type: 'stroke', assessment: { targetMet: null } },
+        ],
+      },
+      { number: 2, par: 4, strokeIndex: 18, status: 'open', events: [] },
+    ],
+  };
+  const rows = holeScorecard(round);
+  assert.deepEqual(rows[0], {
+    number: 1, par: 4, strokeIndex: 1, recordedShots: 3, handicapStrokes: 2, putts: 2,
+    grossStrokes: 6, pickedUp: false, stablefordPoints: 2,
+    targetMet: 1, targetAssessed: 2, completed: true,
+  });
+  assert.equal(rows[1].handicapStrokes, 1);
+  assert.equal(rows[1].stablefordPoints, null);
+  assert.equal(rows[1].completed, false);
+});
+
+test('hole scorecard gives picked-up holes zero points and withholds unsupported scoring', () => {
+  const baseHole = {
+    number: 1, par: 4, strokeIndex: 1, status: 'picked-up',
+    result: { pickedUp: true, grossStrokes: null, putts: 1 }, events: [],
+  };
+  const supported = holeScorecard({
+    scoringProfile: { supported: true, slopeRating: 113, courseRating: 72, par: 72 },
+    profile: { targetHandicap: 18 }, holes: [baseHole],
+  })[0];
+  assert.equal(supported.stablefordPoints, 0);
+  assert.equal(supported.pickedUp, true);
+
+  const unsupported = holeScorecard({
+    scoringProfile: { supported: false }, profile: { targetHandicap: 18 }, holes: [baseHole],
+  })[0];
+  assert.equal(unsupported.handicapStrokes, null);
+  assert.equal(unsupported.stablefordPoints, null);
 });

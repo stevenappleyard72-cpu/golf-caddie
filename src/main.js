@@ -18,7 +18,7 @@ import { distanceYards, formatCoordinate } from './geo.js';
 import { simulatedEndpointFromRemainingDistance } from './simulation.js';
 import { clearRound, loadProfile, loadRound, saveProfile, saveRound } from './storage.js';
 import { createShotGoal, targetProgress } from './benchmarkModel.js';
-import { estimatePlayingLevel } from './scoringModel.js';
+import { estimatePlayingLevel, holeScorecard } from './scoringModel.js';
 
 const app = document.querySelector('#app');
 const state = {
@@ -219,6 +219,53 @@ function roundScoreMarkup(round) {
   return `<div><strong>Round progress after ${holes}</strong><span>Stableford at your target handicap: ${estimate.targetHandicapPoints} point${estimate.targetHandicapPoints === 1 ? '' : 's'}.<br>Your score indicates about a ${estimate.indicatedHandicap} handicap so far.</span></div>`;
 }
 
+function scorecardMarkup(round) {
+  const rows = holeScorecard(round);
+  const completed = rows.filter((row) => row.completed);
+  const totals = completed.reduce((total, row) => ({
+    recordedShots: total.recordedShots + (row.recordedShots ?? 0),
+    putts: total.putts + (row.putts ?? 0),
+    grossStrokes: total.grossStrokes + (row.grossStrokes ?? 0),
+    stablefordPoints: total.stablefordPoints + (row.stablefordPoints ?? 0),
+    targetMet: total.targetMet + row.targetMet,
+    targetAssessed: total.targetAssessed + row.targetAssessed,
+  }), { recordedShots: 0, putts: 0, grossStrokes: 0, stablefordPoints: 0, targetMet: 0, targetAssessed: 0 });
+  const scoringAvailable = Boolean(round.scoringProfile?.supported);
+  const value = (item) => item == null ? '—' : item;
+
+  return `
+    <section class="card scorecard-card" aria-labelledby="scorecard-heading">
+      <div class="section-heading scorecard-heading">
+        <div><p class="step">Round detail</p><h2 id="scorecard-heading">Hole-by-hole scorecard</h2></div>
+        <span class="scorecard-key">Target = met / assessed</span>
+      </div>
+      <div class="scorecard-list">
+        ${completed.length ? completed.map((row) => `
+          <article class="scorecard-hole">
+            <h3>Hole ${row.number}<span>${row.par == null ? '' : `Par ${row.par}`}</span></h3>
+            <dl>
+              <div><dt>Stroke index</dt><dd>${value(row.strokeIndex)}</dd></div>
+              <div><dt>Recorded shots</dt><dd>${value(row.recordedShots)}</dd></div>
+              <div><dt>Putts</dt><dd>${value(row.putts)}</dd></div>
+              <div><dt>Score</dt><dd>${row.pickedUp ? 'PU' : value(row.grossStrokes)}</dd></div>
+              <div><dt>Handicap shots</dt><dd>${value(row.handicapStrokes)}</dd></div>
+              <div><dt>Stableford points</dt><dd>${value(row.stablefordPoints)}</dd></div>
+              <div class="target-result"><dt>Shots within target</dt><dd>${row.targetMet}/${row.targetAssessed}</dd></div>
+            </dl>
+          </article>`).join('') : '<p class="scorecard-empty">Completed holes will appear here.</p>'}
+      </div>
+      <div class="scorecard-totals" aria-label="Scorecard totals">
+        <strong>Total · ${completed.length} holes</strong>
+        <span>Shots <b>${totals.recordedShots}</b></span>
+        <span>Putts <b>${totals.putts}</b></span>
+        <span>Score <b>${totals.grossStrokes}</b></span>
+        <span>Stableford <b>${scoringAvailable ? totals.stablefordPoints : '—'}</b></span>
+        <span>Within target <b>${totals.targetMet}/${totals.targetAssessed}</b></span>
+      </div>
+      <p class="scorecard-note">H'cap shots are allocated from the playing handicap for your target Handicap Index. Picked-up holes score zero Stableford points.</p>
+    </section>`;
+}
+
 function renderRound() {
   const round = state.round;
   if (round.status === 'completed') return renderCompletedRound();
@@ -283,6 +330,7 @@ function renderRound() {
         <button type="button" class="secondary" data-action="export">Export JSON</button>
         <button type="button" class="text-button danger" data-action="abandon">Abandon round</button>
       </section>
+      ${scorecardMarkup(round)}
       <footer>${escapeHtml(state.course.quality.colourSpecificTees)}</footer>
     </main>`;
 }
@@ -304,6 +352,7 @@ function renderCompletedRound() {
         ${roundScoreMarkup(state.round)}
       </section>
       <div class="utility-row"><button type="button" data-action="undo">Undo finish</button><button type="button" class="secondary" data-action="export">Export JSON</button><button type="button" class="text-button" data-action="new-profile">Back to setup</button></div>
+      ${scorecardMarkup(state.round)}
     </main>`;
 }
 
