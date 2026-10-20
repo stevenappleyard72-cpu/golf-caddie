@@ -61,6 +61,28 @@ test('stroke endpoints preserve route state and use the previous endpoint as the
   assert.equal(events[1].assessment.context, 'recovery');
 });
 
+test('GPS strokes retain coordinate accuracy, timestamp and selection metadata', () => {
+  const endpoint = { latitude: 51.0004, longitude: 0.0003 };
+  const round = recordStroke(newRound(), {
+    endpoint,
+    accuracy: 3.4,
+    timestamp: '2026-10-20T10:00:00.000Z',
+    source: 'gps',
+    locationQuality: 'good',
+    locationAgeMs: 850,
+    locationFiltered: true,
+    locationSampleCount: 4,
+  });
+  const event = round.holes[0].events[0];
+  assert.deepEqual(event.endpoint, endpoint);
+  assert.equal(event.accuracy, 3.4);
+  assert.equal(event.timestamp, '2026-10-20T10:00:00.000Z');
+  assert.deepEqual(event.location, {
+    quality: 'good', ageMs: 850, filtered: true, sampleCount: 4,
+  });
+  assert.deepEqual(getBallState(round.holes[0]).location, event.location);
+});
+
 test('simple penalty action records the shot endpoint and one penalty in one undoable action', () => {
   const endpoint = { latitude: 51.0004, longitude: 0.0003 };
   const round = recordPenaltyShot(newRound(), { endpoint, routeEnd: false, source: 'simulation' });

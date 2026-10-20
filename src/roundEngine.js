@@ -73,19 +73,22 @@ export function getBallState(hole) {
   let position = hole.teeOrigin;
   let routeClear = true;
   let accuracy = null;
+  let location = null;
   for (const event of hole.events) {
     if (event.type === 'stroke' && event.endpoint) {
       position = event.endpoint;
       routeClear = event.routeEnd;
       accuracy = event.accuracy;
+      location = event.location || null;
     }
     if (event.type === 'penalty') {
       position = event.dropPosition;
       routeClear = event.routeEnd;
       accuracy = event.accuracy;
+      location = event.location || null;
     }
   }
-  return { position: clone(position), routeClear, accuracy };
+  return { position: clone(position), routeClear, accuracy, location: clone(location) };
 }
 
 export function holeAccounting(hole) {
@@ -103,7 +106,10 @@ export function suggestedTotalStrokes(hole, putts = 0) {
   return holeAccounting(hole).eventTotal + puttCount;
 }
 
-function appendStroke(next, hole, { endpoint, routeEnd, accuracy, source, timestamp }) {
+function appendStroke(next, hole, {
+  endpoint, routeEnd, accuracy, source, timestamp,
+  locationQuality = null, locationAgeMs = null, locationFiltered = false, locationSampleCount = 1,
+}) {
   if (!endpoint || !Number.isFinite(endpoint.latitude) || !Number.isFinite(endpoint.longitude)) {
     throw new Error('A valid stroke endpoint is required');
   }
@@ -135,6 +141,12 @@ function appendStroke(next, hole, { endpoint, routeEnd, accuracy, source, timest
     accuracy: reportedAccuracy,
     source,
     timestamp: timestamp || new Date().toISOString(),
+    location: source === 'gps' ? {
+      quality: locationQuality,
+      ageMs: locationAgeMs,
+      filtered: Boolean(locationFiltered),
+      sampleCount: locationSampleCount,
+    } : null,
     assessmentStatus: assessment.assessmentStatus,
     assessment,
   };
@@ -142,21 +154,33 @@ function appendStroke(next, hole, { endpoint, routeEnd, accuracy, source, timest
   return stroke;
 }
 
-export function recordStroke(round, { endpoint, routeEnd = true, accuracy = null, source = 'simulation', timestamp = null }) {
+export function recordStroke(round, {
+  endpoint, routeEnd = true, accuracy = null, source = 'simulation', timestamp = null,
+  locationQuality = null, locationAgeMs = null, locationFiltered = false, locationSampleCount = 1,
+}) {
   if (round.status !== 'active') throw new Error('The round is not active');
   return mutateWithUndo(round, (next) => {
     const hole = getCurrentHole(next);
     if (!hole || hole.status !== 'open') throw new Error('No open hole is available');
-    appendStroke(next, hole, { endpoint, routeEnd, accuracy, source, timestamp });
+    appendStroke(next, hole, {
+      endpoint, routeEnd, accuracy, source, timestamp,
+      locationQuality, locationAgeMs, locationFiltered, locationSampleCount,
+    });
   });
 }
 
-export function recordPenaltyShot(round, { endpoint, routeEnd = true, accuracy = null, source = 'simulation', timestamp = null }) {
+export function recordPenaltyShot(round, {
+  endpoint, routeEnd = true, accuracy = null, source = 'simulation', timestamp = null,
+  locationQuality = null, locationAgeMs = null, locationFiltered = false, locationSampleCount = 1,
+}) {
   if (round.status !== 'active') throw new Error('The round is not active');
   return mutateWithUndo(round, (next) => {
     const hole = getCurrentHole(next);
     if (!hole || hole.status !== 'open') throw new Error('No open hole is available');
-    const stroke = appendStroke(next, hole, { endpoint, routeEnd, accuracy, source, timestamp });
+    const stroke = appendStroke(next, hole, {
+      endpoint, routeEnd, accuracy, source, timestamp,
+      locationQuality, locationAgeMs, locationFiltered, locationSampleCount,
+    });
     hole.events.push({
       id: globalThis.crypto?.randomUUID?.() || `penalty-${Date.now()}`,
       type: 'penalty',
@@ -168,6 +192,7 @@ export function recordPenaltyShot(round, { endpoint, routeEnd = true, accuracy =
       accuracy: stroke.accuracy,
       source,
       timestamp: timestamp || new Date().toISOString(),
+      location: stroke.location,
     });
   });
 }

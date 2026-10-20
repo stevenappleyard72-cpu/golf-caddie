@@ -71,3 +71,11 @@ test('low-accuracy accepted GPS fixes remain stored but do not affect target suc
   assert.equal(result.assessmentStatus, 'unassessed_low_accuracy');
   assert.equal(result.targetMet, null);
 });
+
+test('fixes worse than the configured acceptable threshold are not assessed', () => {
+  const goal = createShotGoal({ ...base, startDistanceYards: 140 });
+  const acceptable = assessShotOutcome({ goal, endDistanceYards: 20, shotDistanceYards: 125, routeEnd: true, accuracyMetres: 10 });
+  const poor = assessShotOutcome({ goal, endDistanceYards: 20, shotDistanceYards: 125, routeEnd: true, accuracyMetres: 10.1 });
+  assert.equal(acceptable.assessmentStatus, 'assessed');
+  assert.equal(poor.assessmentStatus, 'unassessed_low_accuracy');
+});

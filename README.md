@@ -18,13 +18,14 @@ Open `http://localhost:4174`. The production server serves the built app, `/api/
 
 The phone must open GolfCaddie from a deployed HTTPS address; a desktop computer's `localhost` URL is not a phone-accessible installation link. Open that address in Chrome, press **Install GolfCaddie**, and accept the prompt. If Chrome does not offer the prompt yet, use its menu and choose **Install app** or **Add to Home screen**. The installed icon launches the standalone PWA.
 
-Before going offline, open the installed app once while connected and wait for **Offline copy ready**. Allow location access when the first ball position is recorded. Course data, calculations and round progress then remain on the phone; GPS location services must stay enabled, but network connectivity is not required during the round.
+Before going offline, open the installed app once while connected and wait for **Offline copy ready**. For a GPS round, allow location access and choose **Precise** location on Android. Keep the app visible while playing so its high-accuracy watch can remain warm. Course data, calculations and round progress then remain on the phone; location services must stay enabled, but network connectivity is not required during the round.
 
 ## Current scope
 
 - New-round fields: target Handicap Index, tee colour (red or yellow) and input mode.
 - Round state, calculations and persistence stay in the browser.
 - Simulation and GPS recording use the same round engine.
+- GPS rounds maintain a recent high-accuracy fix history, settle/filter suitable fixes before recording, display reported accuracy quality and store the selected fix metadata. The PWA platform boundary and algorithm are documented in `docs/location-model.md`.
 - Stableford selects the verified scoring profile from tee colour alone: yellow uses the supplied yellow-tee profile and red uses the supplied red-tee profile.
 - Course tee colours and green centres are provisional as documented in `Documents/GolfCaddie_Handover/chislehurst_course/README.md`.
 - Coaching targets use `docs/golf_expected_distance_lookup.csv`, based only on current distance from the mapped green centre and target Handicap Index. Interpolation and boundary rules are documented in `docs/capability-coaching-model.md`.

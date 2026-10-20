@@ -144,6 +144,15 @@ button.danger { color: var(--red); }
 .simulation-position-form p { margin: 0; color: var(--muted); font-size: 0.78rem; line-height: 1.4; }
 .record-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .gps-help { margin: 14px 0 10px; color: var(--muted); font-size: 0.78rem; line-height: 1.4; }
+.gps-status { display: grid; grid-template-columns: 10px auto 1fr; align-items: center; gap: 8px; margin: 10px 0; padding: 10px 12px; border-radius: 11px; background: #eef1ec; color: var(--muted); font-size: 0.76rem; }
+.gps-status strong { color: var(--navy); }
+.gps-status-dot { width: 10px; height: 10px; border-radius: 50%; background: #89999f; }
+.gps-status.excellent .gps-status-dot, .gps-status.good .gps-status-dot { background: var(--green); }
+.gps-status.acceptable .gps-status-dot { background: var(--gold); }
+.gps-status.poor .gps-status-dot { background: var(--red); }
+.gps-status.excellent, .gps-status.good { background: var(--green-light); }
+.gps-status.acceptable { background: #fff0d1; }
+.gps-status.poor { background: #f8dfdc; }
 details summary { cursor: pointer; color: var(--navy); font-weight: 800; }
 .compact-form { display: grid; gap: 13px; margin-top: 18px; }
 .compact-form > button { margin-top: 4px; }

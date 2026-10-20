@@ -3,9 +3,10 @@ import {
   EXPECTED_DISTANCE_LOOKUP_SOURCE,
   EXPECTED_DISTANCE_YARDS,
 } from './expectedDistanceLookup.js';
+import { DEFAULT_LOCATION_CONFIG } from './locationTracker.js';
 
 export const BENCHMARK_MODEL_VERSION = 'expected-distance-lookup-v1';
-export const MAX_ASSESSMENT_ACCURACY_METRES = 23;
+export const MAX_ASSESSMENT_ACCURACY_METRES = DEFAULT_LOCATION_CONFIG.acceptableAccuracyMetres;
 
 const clamp = (value, low, high) => Math.max(low, Math.min(value, high));
 const round1 = (value) => Math.round(value * 10) / 10;

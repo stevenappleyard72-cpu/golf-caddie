@@ -19,6 +19,7 @@ import { simulatedEndpointFromRemainingDistance } from './simulation.js';
 import { clearRound, loadProfile, loadRound, saveProfile, saveRound } from './storage.js';
 import { createShotGoal, targetProgress } from './benchmarkModel.js';
 import { estimatePlayingLevel, holeScorecard } from './scoringModel.js';
+import { DEFAULT_LOCATION_CONFIG, LocationTracker, locationQuality } from './locationTracker.js';
 
 const app = document.querySelector('#app');
 const state = {
@@ -30,6 +31,8 @@ const state = {
   busy: false,
   offlineReady: false,
   installPrompt: null,
+  gpsTracker: null,
+  gpsStatus: null,
 };
 
 const escapeHtml = (value) => String(value ?? '')
@@ -102,6 +105,7 @@ function updateOfflineStatus() {
 }
 
 function renderStartup() {
+  state.gpsTracker?.stop();
   const profile = profileDefaults();
   const scoring = getScoringProfile(state.course, profile.teeColour);
   const canResume = state.round?.status === 'active';
@@ -138,7 +142,7 @@ function renderStartup() {
               <option value="simulation">Simulation</option>
               <option value="gps">Phone GPS</option>
             </select>
-            <span>GPS is requested only when you record a ball position.</span>
+            <span>High-accuracy location stays active while the GPS round is open on screen.</span>
           </label>
         </div>
         <div id="scoring-notice">${scoringNotice(scoring)}</div>
@@ -160,7 +164,7 @@ function eventDescription(event, strokeNumber) {
     const result = event.assessment;
     const target = result?.targetMet == null ? 'target not assessed' : result.targetMet ? 'target met' : 'target missed';
     return event.endpoint
-      ? `<strong>Stroke ${strokeNumber}</strong><span>${result ? `${result.shotDistanceYards} yd played · ${result.progressYards >= 0 ? '+' : ''}${result.progressYards} yd progress · ${target}` : 'legacy shot · unassessed'} · ${event.routeStart ? 'clear' : 'recovery'} → ${event.routeEnd ? 'clear' : 'recovery'}${event.accuracy != null ? ` · ±${Math.round(event.accuracy)}m` : ''}</span>`
+      ? `<strong>Stroke ${strokeNumber}</strong><span>${result ? `${result.shotDistanceYards} yd played · ${result.progressYards >= 0 ? '+' : ''}${result.progressYards} yd progress · ${target}` : 'legacy shot · unassessed'} · ${event.routeStart ? 'clear' : 'recovery'} → ${event.routeEnd ? 'clear' : 'recovery'}${event.accuracy != null ? ` · ±${Math.round(event.accuracy)}m ${event.location?.quality || locationQuality(event.accuracy)}${event.location?.filtered ? ` · filtered from ${event.location.sampleCount} fixes` : ''}` : ''}</span>`
       : `<strong>Stroke ${strokeNumber}</strong><span>Endpoint unknown · unassessed</span>`;
   }
   return `<strong>Penalty +${event.penaltyStrokes}</strong><span>Added at the recorded ball position</span>`;
@@ -265,6 +269,7 @@ function renderRound() {
   const summary = roundSummary(round);
   const goal = currentShotGoal(round, hole, ball);
   const progress = targetProgress(round);
+  const ballQuality = ball.accuracy == null ? '' : ` · GPS ±${Math.round(ball.accuracy)}m ${ball.location?.quality || locationQuality(ball.accuracy)}`;
   app.innerHTML = `
     <main class="app-shell round-shell">
       <header class="round-header">
@@ -275,7 +280,7 @@ function renderRound() {
       <section class="distance-panel">
         <span>Distance to mapped green centre</span>
         <strong>${Math.round(remaining)} <small>yd</small></strong>
-        <p>${formatCoordinate(ball.position)} · route ${ball.routeClear ? 'clear' : 'recovery'}</p>
+        <p>${formatCoordinate(ball.position)} · route ${ball.routeClear ? 'clear' : 'recovery'}${ballQuality}</p>
       </section>
       <section class="status-strip">
         <div><span>Recorded strokes</span><strong>${accounting.strokes}</strong></div>
@@ -289,9 +294,9 @@ function renderRound() {
             <label>Distance from green centre <span>yards</span>
               <input name="remainingYards" type="number" min="0" max="2000" step="1" inputmode="numeric" placeholder="${goal.kind === 'distance' ? Math.round(goal.maximumEndDistanceYards) : 'Enter yards'}" required>
             </label>
-            <p>Enter how far the ball finished from the green. The app calculates how far it travelled from its previous position and assesses the shot. A Recovery route can make an otherwise long-enough shot miss its target.</p>
+            <p>Enter how far the ball finished from the green. The app calculates how far it travelled from its previous position and assesses the shot. Route state remains factual context and does not change the distance target.</p>
             <div class="record-actions"><button type="submit" class="primary" name="recordType" value="stroke">Record ball position</button><button type="submit" name="recordType" value="penalty">Record penalty</button></div>
-          </form>` : `<p class="gps-help">Stand beside the ball, check the new route, then press once. Wait for the GPS result.</p><div class="record-actions"><button type="button" class="primary" data-action="gps-stroke" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Getting GPS fix…' : 'Record ball position'}</button><button type="button" class="penalty-button" data-action="gps-penalty" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Please wait…' : 'Record penalty'}</button></div>`}
+          </form>` : `<p class="gps-help">Keep the app open while playing so high-accuracy location can settle. On Android, grant Precise location. Stand beside the ball, check the new route, then record.</p>${gpsStatusMarkup()}<div class="record-actions"><button type="button" class="primary" data-action="gps-stroke" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Settling GPS…' : 'Record ball position'}</button><button type="button" class="penalty-button" data-action="gps-penalty" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Please wait…' : 'Record penalty'}</button></div>`}
       </section>
 
       <section class="feedback-card">
@@ -322,9 +327,11 @@ function renderRound() {
       ${scorecardMarkup(round)}
       <footer>${escapeHtml(state.course.quality.colourSpecificTees)}</footer>
     </main>`;
+  syncLocationTracking();
 }
 
 function renderCompletedRound() {
+  state.gpsTracker?.stop();
   const summary = roundSummary(state.round);
   const progress = targetProgress(state.round);
   app.innerHTML = `
@@ -366,26 +373,57 @@ function readProfileForm(form) {
   });
 }
 
-function getGpsPosition() {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) return reject(new Error('GPS is unavailable on this device'));
-    navigator.geolocation.getCurrentPosition(
-      ({ coords, timestamp }) => resolve({
-        endpoint: { latitude: coords.latitude, longitude: coords.longitude },
-        accuracy: coords.accuracy,
-        timestamp: new Date(timestamp).toISOString(),
-      }),
-      (error) => {
-        const messages = {
-          1: 'Location permission was denied. Allow location access for GolfCaddie in Chrome settings, then try again.',
-          2: 'Your phone could not determine its location. Move into the open and try again.',
-          3: 'The GPS fix took too long. Move into the open and try again.',
-        };
-        reject(new Error(messages[error.code] || `GPS fix failed: ${error.message}`));
+function gpsStatusText(status = state.gpsStatus) {
+  if (!status) return 'Starting high-accuracy location…';
+  if (status.permissionState === 'denied') return 'Location denied · enable Precise location in Android or Chrome settings';
+  if (!status.fix) return status.error ? 'Waiting for a usable GPS fix…' : 'High-accuracy GPS warming up…';
+  const ageSeconds = Math.round(status.fix.ageMs / 1000);
+  const filtering = status.fix.filtered ? ` · filtered ${status.fix.sampleCount} fixes` : '';
+  return `${status.fix.quality} · ±${Math.round(status.fix.accuracy)}m · ${ageSeconds}s old${filtering}`;
+}
+
+function gpsStatusMarkup() {
+  const quality = state.gpsStatus?.fix?.quality || 'waiting';
+  return `<div id="gps-status" class="gps-status ${quality}" role="status"><span class="gps-status-dot" aria-hidden="true"></span><strong>Location</strong><span>${escapeHtml(gpsStatusText())}</span></div>`;
+}
+
+function updateGpsStatus() {
+  const element = document.querySelector('#gps-status');
+  if (!element) return;
+  const quality = state.gpsStatus?.fix?.quality || 'waiting';
+  element.className = `gps-status ${quality}`;
+  const value = element.querySelector('span:last-child');
+  if (value) value.textContent = gpsStatusText();
+}
+
+function ensureLocationTracker() {
+  if (!state.gpsTracker) {
+    state.gpsTracker = new LocationTracker({
+      geolocation: navigator.geolocation,
+      permissions: navigator.permissions,
+      onUpdate: (status) => {
+        state.gpsStatus = status;
+        updateGpsStatus();
       },
-      { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 }
-    );
-  });
+    });
+  }
+  return state.gpsTracker;
+}
+
+function syncLocationTracking() {
+  const shouldTrack = state.round?.status === 'active'
+    && state.round.mode === 'gps'
+    && document.visibilityState !== 'hidden';
+  if (shouldTrack) {
+    try {
+      ensureLocationTracker().start();
+    } catch (error) {
+      state.gpsStatus = { error, fix: null, permissionState: 'unknown' };
+      updateGpsStatus();
+    }
+  } else {
+    state.gpsTracker?.stop();
+  }
 }
 
 async function requestPersistentStorage() {
@@ -397,11 +435,20 @@ async function requestPersistentStorage() {
 }
 
 async function getAcceptedGpsPosition() {
-  const fix = await getGpsPosition();
-  if (fix.accuracy > 35 && !window.confirm(`GPS accuracy is ±${Math.round(fix.accuracy)}m. Record this fix anyway?`)) {
+  const fix = await ensureLocationTracker().acquireBestPosition();
+  if (fix.accuracy > DEFAULT_LOCATION_CONFIG.acceptableAccuracyMetres
+    && !window.confirm(`The best recent position is ${fix.quality} at ±${Math.round(fix.accuracy)}m. Record it anyway?`)) {
     return null;
   }
-  return fix;
+  return {
+    endpoint: fix.endpoint,
+    accuracy: fix.accuracy,
+    timestamp: fix.timestamp,
+    locationQuality: fix.quality,
+    locationAgeMs: fix.ageMs,
+    locationFiltered: fix.filtered,
+    locationSampleCount: fix.sampleCount,
+  };
 }
 
 function downloadRound() {
@@ -533,7 +580,8 @@ app.addEventListener('click', async (event) => {
       const next = penalty
         ? recordPenaltyShot(state.round, { ...fix, routeEnd, source: 'gps' })
         : recordStroke(state.round, { ...fix, routeEnd, source: 'gps' });
-      await persistRound(next, penalty ? 'Shot and one penalty stroke recorded.' : 'Ball position recorded.');
+      const qualityMessage = ` GPS ${fix.locationQuality}, ±${Math.round(fix.accuracy)}m${fix.locationFiltered ? `, filtered from ${fix.locationSampleCount} fixes` : ''}.`;
+      await persistRound(next, `${penalty ? 'Shot and one penalty stroke recorded.' : 'Ball position recorded.'}${qualityMessage}`);
     }
     if (action === 'undo') await persistRound(undoLastAction(state.round), 'Last action undone.');
     if (action === 'export') downloadRound();
@@ -572,6 +620,8 @@ async function registerServiceWorker() {
 
 window.addEventListener('online', updateOfflineStatus);
 window.addEventListener('offline', updateOfflineStatus);
+document.addEventListener('visibilitychange', syncLocationTracking);
+window.addEventListener('pagehide', () => state.gpsTracker?.stop());
 window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
   state.installPrompt = event;
